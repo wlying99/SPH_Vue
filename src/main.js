@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 //三级联动的组件 注册为全局组件
-import TypeNav from '@/view/Home/TypeNav'
+import TypeNav from '@/components/TypeNav'
 
 Vue.component(TypeNav.name, TypeNav)
 
