@@ -2,7 +2,10 @@
   <div id="app">
     <Header></Header>
     <router-view></router-view>
-    <Footer></Footer>
+    <!-- 再Home、Search显示的，在登录，注册隐藏 -->
+    <!-- 最原始方法 -->
+    <!-- <Footer v-show="$route.path=='/home' ||$route.path=='/search'"></Footer> -->
+    <Footer v-show="$route.meta.show"></Footer>
   </div>
 </template>
 <script>
