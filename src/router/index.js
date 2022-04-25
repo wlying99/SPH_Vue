@@ -3,9 +3,7 @@ import VueRouter from 'vue-router'
 import Home from "../view/Home"
 import Login from "@/view/Login"
 import Register from "@/view/Register"
-//路由懒加载方式
-const Search = () =>
-    import ("@/view/Search")
+import Search from "@/view/Search"
 
 Vue.use(VueRouter)
 
@@ -26,7 +24,8 @@ const routes = [{
     },
     {
         path: "/search",
-        component: Search
+        component: Search,
+        name: "search"
     }
 
 ]
