@@ -4,28 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :list='bannerList'></Carousel>
       </div>
       <div class="right">
         <div class="news">
@@ -101,9 +80,65 @@
 </template>
 
 <script>
-  export default {
-    name: "ListContainer",
-  };
+import{mapState} from 'vuex'
+
+export default {
+  name: "ListContainer",
+  computed: {
+    ...mapState({
+      bannerList:(state)=>{
+       return state.home.bannerList;
+        }
+    }),
+  },
+  mounted() {
+    //派发action 通过Vuex发起ajax请求，将数据存储在仓库当中
+    this.$store.dispatch("getBannerList");
+    // setTimeout(() => {
+    //   var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
+    //     loop: true, // 循环模式选项
+
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //       clickable :true,
+    //     },
+
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+    //   });
+    // }, 2000);
+  },
+  // watch:{
+  //   //监听bannerList里数据的变化，因为里面的数据发生过变化，最开始是一个空数组 
+  //   bannerList:{
+  //     immediate: true,
+  //     handler(){  
+  //       this.$nextTick(() => {
+  //         new Swiper(this.$refs.mySwiper, {
+  //         loop: true, // 循环模式选项
+  
+  //         // 如果需要分页器
+  //         pagination: {
+  //           el: ".swiper-pagination",
+  //           clickable :true,
+  //         },
+  
+  //         // 如果需要前进后退按钮
+  //         navigation: {
+  //           nextEl: ".swiper-button-next",
+  //           prevEl: ".swiper-button-prev",
+  //       },
+  //     });
+  //       }) 
+  //     }
+  //   }
+  // }
+
+};
 </script>
 
 <style scoped lang="less">

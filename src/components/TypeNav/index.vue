@@ -2,9 +2,10 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveIndex" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
-         <div class="sort">
+        <transition name="sort">
+         <div class="sort" v-show="show">
           <div class="all-sort-list2" @click="goSearch">
             <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
               <h3 @mouseenter="changeIndex(index)">
@@ -27,6 +28,7 @@
             </div>
           </div>
         </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -53,13 +55,18 @@
     data(){
       return{
         //存储用户鼠标移动的分类
-        currentIndex:-1
+        currentIndex:-1,
+        show:true
       }
     },
     //组件挂载完毕，可以向服务器发请求
     mounted(){
       //通知VUEX发送请求，获取数据，存储于仓库中
-      this.$store.dispatch('categoryList');
+     
+      //如果不是Home路由组件，将typeNav进行隐藏
+      if(this.$route.path != '/home'){
+        this.show = false;
+      }
     },
     computed:{
       ...mapState({
@@ -78,7 +85,17 @@
         this.currentIndex = index
       },50),
       leaveIndex(){
-        this.currentIndex = -1
+         this.currentIndex = -1;
+       //当鼠标离开时，让商品分类列表进行隐藏
+        if(this.$route.path != '/home'){
+
+          this.show = false
+        }
+        
+      },
+
+      enterShow(){
+        this.show = true
       },
       goSearch(event){
         let element = event.target;
@@ -86,7 +103,7 @@
         let {categoryname,category1id,category2id,category3id} = element.dataset;
 
         if(categoryname){
-          let location = { name:"search" };
+          let loction = { name:"search" };
           let query = {categoryName:categoryname};
           if(category1id){
             query.category1Id = category1id
@@ -95,10 +112,16 @@
           }else{
             query.category3Id = category3id
           }
-          location.query = query;
-          this.$router.push(location)
+          //判断 如果路由跳转的时候 带有params参数 一起传递过去
+          if(this.$route.params){
+            loction.params = this.$router.params
+            loction.query = query;
+            this.$router.push(loction)
+          }
+         
         }
       }
+      
     }
   };
 </script>
@@ -231,6 +254,15 @@
           background-color: skyblue;
         }
       }
+    }
+    .sort-enter{
+      height: 0px;
+    }
+    .sort-enter-to{
+      height: 461px;
+    }
+    .sort-enter-active{
+      transition: all .5s linear;
     }
   }
 }

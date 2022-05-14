@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "../view/Home"
-import Login from "@/view/Login"
-import Register from "@/view/Register"
-import Search from "@/view/Search"
+import routes from './routes'
 
 Vue.use(VueRouter)
 
@@ -27,40 +24,16 @@ VueRouter.prototype.push = function push(location, resolve, reject) {
     }
 }
 
-const routes = [{
-        path: "/",
-        redirect: '/home'
-    }, {
-        path: '/home',
-        component: Home,
-        meta: { show: true }
-    },
-    {
-        path: "/login",
-        component: Login,
-        meta: { show: false }
-    },
-    {
-        path: "/register",
-        component: Register,
-        meta: { show: false }
-    },
-    {
-        path: "/search",
-        component: Search,
-<<<<<<< HEAD
-        meta: { show: true }
-=======
-        name: "search"
->>>>>>> home
-    }
 
-]
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes,
+    //返回一个y = 0， 代表滚动条在最上方
+    scrollBehavior(to, from, savedPosition) {
+        return { y: 0 };
+    }
 })
 
 export default router

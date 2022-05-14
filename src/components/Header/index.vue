@@ -39,8 +39,9 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
+            v-model="keyword"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button">
+          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
             搜索
           </button>
         </form>
@@ -52,8 +53,33 @@
 
 <script>
   export default {
-    name:''
-  };
+    name:'',
+    data(){
+      return {
+        keyword: "",
+      };
+    },
+    methods:{
+      goSearch(){
+        console.log(this.keyword);
+        //如果有query参数，也带过去
+       if (this.$route.query) {
+        let loction = {
+          name: "search",
+          params: { keyword: this.keyword || undefined },
+        };
+        loction.query = this.$route.query;
+        this.$router.push(loction);
+      }
+      }
+  },
+  mounted(){
+    //通过全局事件总线清除关键字
+    this.$bus.$on('clear',()=>{
+      this.keyword = ''
+    })
+  }
+  }
 </script>
 
 <style scoped lang="less">
